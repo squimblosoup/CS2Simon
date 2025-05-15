@@ -28,7 +28,7 @@ body{
   border-radius: 15px;
   opacity: .7;           /* dim until “lit” */
   cursor: pointer;
-  filter: brightness(70%);
+  filter: brightness(70%); /*CHANGE: added a brightness filter to the .lit function to better dicern when a pad is lit vs not lit*/
   transition: opacity .15s ease;  /* smooth fade */
 }
 /*CHANGE: changed pad names to be directional*/
@@ -40,5 +40,5 @@ body{
 /* --- Lit state (JS toggles this class) --- */
 .lit{
   opacity:1 !important;
-  filter: brightness(100%);
+  filter: brightness(100%); /*CHANGE: added a brightness filter to the .lit function to better dicern when a pad is lit vs not lit*/
 }
