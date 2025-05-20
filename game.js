@@ -10,6 +10,7 @@
 // ---------- 1. DATA (state variables) ----------
 
 // pad IDs in one handy array
+const startText = ["textNW", "textNE", "textSW", "textSE"]
 const pads = ["NW", "NE", "SW", "SE"]; //CHANGE: Changed pad names to be directional rather than color
 
 // the growing sequence the player must repeat
@@ -17,6 +18,9 @@ let sequence = [];
 
 // where the player currently is in that sequence
 let playerPos = 0;
+
+// CHANGE: I found the game would start way too early and the player could easily miss the first flash so I added a delay. This is the variable that controls that delay
+var startDelayMs = 2000;
 
 // ---------- 2. OUTPUT  ----------
 
@@ -110,5 +114,8 @@ pads.forEach(clr => {
 });
 
 // ---------- GAME START ----------
+//CHANGE: Added start delay
+setTimeout(function() {
 addStep();      // create round 1
 playSequence(); // show it
+}, startDelayMs);

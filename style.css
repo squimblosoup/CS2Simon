@@ -31,6 +31,7 @@ body{
   filter: brightness(70%); /*CHANGE: added a brightness filter to the .lit function to better dicern when a pad is lit vs not lit*/
   transition: opacity .15s ease;  /* smooth fade */
 }
+
 /*CHANGE: changed pad names to be directional*/
 #NW {background:#19cf65;}
 #NE {background:#e52626;}
@@ -41,4 +42,8 @@ body{
 .lit{
   opacity:1 !important;
   filter: brightness(100%); /*CHANGE: added a brightness filter to the .lit function to better dicern when a pad is lit vs not lit*/
+}
+/* started state applies to text on button */
+.started{
+  visibility: 0;
 }
