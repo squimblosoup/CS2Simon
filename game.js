@@ -20,8 +20,10 @@ let sequence = [];
 let playerPos = 0;
 
 // CHANGE: I found the game would start way too early and the player could easily miss the first flash so I added a delay. This is the variable that controls that delay
-var startDelayMs = 2000;
+var startDelayMs = 1000;
 
+// CHANGE.3: Added a game state boolean so it can be tracked if the game is started or not
+var gameStarted = false
 // ---------- 2. OUTPUT  ----------
 
 /**
@@ -34,6 +36,26 @@ function flash(color) {
   const pad = document.getElementById(color);
   pad.classList.add("lit");
   setTimeout(() => pad.classList.remove("lit"), 400);
+}
+
+/**
+ * disappear(startText)
+ * -------------
+ * adds the .started class to the text
+ */
+function disappear(colorText) {
+  const padText = document.getElementById(colorText);
+  padText.classList.add("started");
+}
+
+/**
+ * reappear(startText)
+ * -------------
+ * adds the .started class to the text
+ */
+function reappear(colorText) {
+  const padText = document.getElementById(colorText);
+  padText.classList.remove("started");
 }
 
 /**
@@ -68,12 +90,24 @@ function playSequence() {
  * handleClick(chosen)
  * -------------------
  * Runs every time the player clicks a pad.
- * 1) Checks if chosen color matches sequence[playerPos].
- * 2) If wrong → game over & reset.
- * 3) If correct & end of round → nextRound().
+ * 1) CHANGE: Checks if game has been started, if not starts game
+ * 2) Checks if chosen color matches sequence[playerPos].
+ * 3) If wrong → game over & reset.
+ * 4) If correct & end of round → nextRound().
  */
 function handleClick(chosen) {
-  if (chosen === sequence[playerPos]) {
+  if (gameStarted === false) {
+    flash("NW");
+    flash("NE");
+    flash("SW");
+    flash("SE");
+    gameStarted = true;
+    disappear("textNW");
+    disappear("textNE");
+    disappear("textSW");
+    disappear("textSE");
+  }
+  else if (chosen === sequence[playerPos]) {
     flash(chosen);          // give feedback
     playerPos++;            // move to next expected position
 
@@ -104,18 +138,33 @@ function nextRound() {
  */
 function resetGame() {
   sequence = [];
-  addStep();
-  playSequence();
+  gameStarted = false;
+  disappear("textNW");
+  disappear("textNE");
+  disappear("textSW");
+  disappear("textSE");
+  startGame();
 }
 
+/**
+ * startGame()
+ * -----------
+ * Waits for gameStarted variable to be true, then allows code to pass
+ */
+function startGame() {
+  if (gameStarted === true) {
+    setTimeout(function() {
+      addStep();      // create round 1
+      playSequence(); // show it
+    }, startDelayMs);
+  }
+  else {setTimeout(function(){startGame();}, 10);
+  }
+}
 // Attach click listeners *once* when the script loads
 pads.forEach(clr => {
   document.getElementById(clr).addEventListener("click", () => handleClick(clr));
 });
 
 // ---------- GAME START ----------
-//CHANGE: Added start delay
-setTimeout(function() {
-addStep();      // create round 1
-playSequence(); // show it
-}, startDelayMs);
+startGame();

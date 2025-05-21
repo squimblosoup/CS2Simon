@@ -45,5 +45,5 @@ body{
 }
 /* started state applies to text on button */
 .started{
-  visibility: 0;
+  opacity:0 ;
 }
