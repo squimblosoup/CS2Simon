@@ -24,6 +24,9 @@ var startDelayMs = 1000;
 
 // CHANGE.3: Added a game state boolean so it can be tracked if the game is started or not
 var gameStarted = false
+
+// CHANGE: ADDED AUDIO TO WHEN YOU CLICK
+var orchestraHit = new Audio(src="/assets/lo-fi-orchestra-hit_120bpm_C_major.mp3")
 // ---------- 2. OUTPUT  ----------
 
 /**
@@ -56,6 +59,20 @@ function disappear(colorText) {
 function reappear(colorText) {
   const padText = document.getElementById(colorText);
   padText.classList.remove("started");
+}
+
+/**
+ * getRandomColor()
+ * -------------
+ * generates a random hexcode. From https://stackoverflow.com/questions/1484506/random-color-generator 
+ */
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
 
 /**
@@ -96,6 +113,10 @@ function playSequence() {
  * 4) If correct & end of round → nextRound().
  */
 function handleClick(chosen) {
+  orchestraHit.pause();
+  orchestraHit.currentTime = 0;
+  orchestraHit.play();
+  document.body.style.backgroundColor = getRandomColor();
   if (gameStarted === false) {
     flash("NW");
     flash("NE");
