@@ -23,10 +23,13 @@ let playerPos = 0;
 var startDelayMs = 1000;
 
 // CHANGE.3: Added a game state boolean so it can be tracked if the game is started or not
-var gameStarted = false
+var gameStarted = false;
 
 // CHANGE: ADDED AUDIO TO WHEN YOU CLICK
 var orchestraHit = new Audio(src="/assets/lo-fi-orchestra-hit_120bpm_C_major.mp3")
+
+// CHANGE: ADDED HIGH SCORE TRACKER]
+var highScore = 0;
 // ---------- 2. OUTPUT  ----------
 
 /**
@@ -94,7 +97,10 @@ function addStep() {
 function playSequence() {
   playerPos = 0;                                    // reset player progress
   document.getElementById("round").innerText = sequence.length;
-
+  if (sequence.length > highScore) {
+    highScore = sequence.length;
+    document.getElementById("highScore").innerText = highScore;
+  }
   sequence.forEach((clr, i) => {
     // each flash delayed by i × 600 ms
     setTimeout(() => flash(clr), i * 600);
@@ -160,10 +166,11 @@ function nextRound() {
 function resetGame() {
   sequence = [];
   gameStarted = false;
-  disappear("textNW");
-  disappear("textNE");
-  disappear("textSW");
-  disappear("textSE");
+  document.getElementById("round").innerText = 0;
+  reappear("textNW");
+  reappear("textNE");
+  reappear("textSW");
+  reappear("textSE");
   startGame();
 }
 
